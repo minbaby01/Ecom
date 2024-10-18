@@ -1,6 +1,8 @@
 import ProductImageUpload from "@/components/admin-view/image-upload";
 import { Button } from "@/components/ui/button";
-import { addFeatureImages, getFeatureImages } from "@/store/common-slice";
+import { useToast } from "@/hooks/use-toast";
+import { addFeatureImages, deleteFeatureImages, getFeatureImages } from "@/store/common-slice";
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,6 +11,7 @@ function AdminDashboard() {
     const [uploadedImageUrl, setUploadedImageUrl] = useState("");
     const [imageLoadingState, setImageLoadingState] = useState(false);
     const dispatch = useDispatch();
+    const { toast } = useToast();
 
     const { featureImageList } = useSelector(state => state.commonFeature)
 
@@ -20,7 +23,22 @@ function AdminDashboard() {
                 setUploadedImageUrl("");
             }
         })
+    }
 
+    function handleDelete(getCurrentFeatureImageId) {
+        dispatch(deleteFeatureImages(getCurrentFeatureImageId)).then((data) => {
+            if (data?.payload?.success) {
+                dispatch(getFeatureImages());
+                toast({
+                    title: data?.payload?.message,
+                })
+            } else {
+                toast({
+                    title: data?.payload?.message,
+                    variant: "destructive"
+                })
+            }
+        })
     }
 
     useEffect(() => {
@@ -43,9 +61,15 @@ function AdminDashboard() {
 
         <div className="flex flex-col gap-2 mt-5">
             {featureImageList && featureImageList.length > 0 ?
-                featureImageList.map(item => <div key={item._id}>
+                featureImageList.map(item => <div key={item._id} className="relative">
                     <img src={item.image}
-                    className="w-full h-[300px] object-cover rounded-sm" />
+                        className="w-full h-[300px] object-cover rounded-sm" />
+                    <div className="absolute top-0 right-0">
+                        <Button variant="outline" size="icon" className="rounded-full" onClick={() => handleDelete(item._id)}>
+                            <X />
+                        </Button>
+                    </div>
+
                 </div>) : null
             }
         </div>

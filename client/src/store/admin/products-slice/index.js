@@ -50,9 +50,9 @@ const AdminProductsSlice = createSlice({
         }).addCase(getAllProducts.fulfilled, (state, action) => {
             state.isLoading = false;
             state.productLists = action.payload.data
-        }).addCase(getAllProducts.rejected, (state, action) => {
+        }).addCase(getAllProducts.rejected, (state) => {
             state.isLoading = false;
-            productLists = [];
+            state.productLists = [];
         })
     }
 });
