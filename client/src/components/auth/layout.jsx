@@ -8,7 +8,7 @@ function AuthLayout() {
         <div className="flex min-h-screen w-full">
             <div className="hidden lg:flex items-center justify-center bg-black w-1/2 px-12">
                 <div className="max-w-md space-y-6 text-center text-primary-foreground">
-                    <h1 className="text-4xl font-extrabold tracking-tight">Register account and change role === &#39;admin&#39; to access admin panel</h1>
+                    <h1 className="text-4xl font-extrabold tracking-tight">admin panel: &#39;admin@gmail.com&#39; password: &#39;admin&#39;</h1>
                 </div>
             </div>
 
