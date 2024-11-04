@@ -18,6 +18,8 @@ import UnauthPage from "./pages/unauth-page"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { checkAuth } from "./store/auth-slice"
+import AdminArticles from "./pages/admin-view/articles"
+import AdminArticleEditor from "./pages/admin-view/articles-editor"
 
 function App() {
 
@@ -55,6 +57,13 @@ function App() {
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
+
+          <Route path="articles">
+            <Route path="" element={<AdminArticles />} />
+            <Route path="create" element={<AdminArticleEditor />} />
+            <Route path="update/:id" element={<AdminArticleEditor />} />
+          </Route>
+
         </Route>
 
         <Route path="/shop" element={

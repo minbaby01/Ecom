@@ -28,9 +28,9 @@ function AdminOrdersView() {
                 <TableBody>
                     <TableRow>
                         <TableCell>123456</TableCell>
-                        <TableCell>123456</TableCell>
-                        <TableCell>123456</TableCell>
-                        <TableCell>123456</TableCell>
+                        <TableCell>date123</TableCell>
+                        <TableCell>Pending</TableCell>
+                        <TableCell>999USD</TableCell>
                         <TableCell>
                             <Dialog open={openDetailsDialog} onOpenChange={setOpenDetailsDialog}>
                                 <Button onClick={() => {

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Package, ShoppingBag, User } from "lucide-react";
+import { LayoutDashboard, Newspaper, Package, ShoppingBag, User } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
@@ -22,6 +22,12 @@ const adminSidebarMenuItems = [
         path: '/admin/orders',
         icon: <ShoppingBag />
     },
+    {
+        id: 'articles',
+        label: 'Articles',
+        path: '/admin/articles',
+        icon: <Newspaper />,
+    },
 
 ]
 
@@ -30,16 +36,18 @@ function MenuItems({ setOpen }) {
 
     return <nav className="mt-8 flex-col flex gap-2">
         {
-            adminSidebarMenuItems.map(menuItem => <div
-                key={menuItem.id}
-                className="flex items-center gap-2 rounded-md px-3 py-2 cursor-pointer text-muted-foreground hover:bg-muted hover:text-foreground"
-                onClick={() => {
-                    navigate(menuItem.path);
-                    setOpen ? setOpen(false) : null
-                }}>
-                {menuItem.icon}
-                <span>{menuItem.label}</span>
-            </div>)
+            adminSidebarMenuItems.map(menuItem =>
+                <div
+                    key={menuItem.id}
+                    className="flex items-center gap-2 rounded-md px-3 py-2 cursor-pointer text-muted-foreground hover:bg-muted hover:text-foreground"
+                    onClick={() => {
+                        navigate(menuItem.path);
+                        setOpen ? setOpen(false) : null
+                    }}>
+                    {menuItem.icon}
+                    <span>{menuItem.label}</span>
+                </div>
+            )
         }
     </nav>
 }
