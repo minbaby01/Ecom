@@ -68,3 +68,7 @@
 .tiptap-editor {
   all: unset;
 }
+
+.my-custom-p {
+  min-height: 24px;
+}

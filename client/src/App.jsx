@@ -20,6 +20,8 @@ import { useEffect } from "react"
 import { checkAuth } from "./store/auth-slice"
 import AdminArticles from "./pages/admin-view/articles"
 import AdminArticleEditor from "./pages/admin-view/articles-editor"
+import SearchProducts from "./pages/shopping-view/search"
+import ShoppingOrderDetailsView from "./pages/shopping-view/order-details"
 
 function App() {
 
@@ -71,7 +73,11 @@ function App() {
             <ShoppingLayout />
           </CheckAuth>
         }>
-          <Route path="account" element={<ShoppingAccount />} />
+          <Route path="account">
+            <Route path="" element={<ShoppingAccount />} />
+            <Route path="order/:id" element={< ShoppingOrderDetailsView />} />
+          </Route>
+
           <Route path="checkout" element={<ShoppingCheckout />} />
 
         </Route>
@@ -81,6 +87,7 @@ function App() {
         }>
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
+          <Route path="search" element={<SearchProducts />} />
         </Route>
 
         <Route path="*" element={

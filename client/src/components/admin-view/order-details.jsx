@@ -14,9 +14,7 @@ function AdminOrderDetailsView() {
     const [formData, setFormData] = useState(initalFormData);
 
     function onSubmit(event) {
-        event.preventDefault();
-        console.log(event);
-        
+        event.preventDefault();        
     }
 
     return <DialogContent className="sm:max-w-[600px]">
@@ -58,6 +56,7 @@ function AdminOrderDetailsView() {
                             <span>address</span>
                             <span>city</span>
                             <span>phone</span>
+                            <span>notes</span>
                         </div>
                     </div>
                 </div>

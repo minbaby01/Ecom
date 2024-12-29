@@ -1,5 +1,5 @@
 import Address from "@/components/shoppping-view/address";
-import ShoppingOrders from "@/components/shoppping-view/order";
+import ShoppingOrders from "@/components/shoppping-view/orders";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 

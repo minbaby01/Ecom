@@ -8,9 +8,9 @@ import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
 import TextAlign from '@tiptap/extension-text-align'
 import FontFamily from '@tiptap/extension-font-family'
-import FontSize from './font-size';
-
+// import FontSize from './font-size';
 import { Button } from '../ui/button'
+// import Paragraph from '@tiptap/extension-paragraph'
 import { AlignCenterIcon, AlignLeftIcon, AlignRightIcon, Bold, Code2Icon, CodeIcon, ImageIcon, ItalicIcon, ListIcon, ListOrderedIcon, QuoteIcon, RedoIcon, StrikethroughIcon, UndoIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
@@ -21,7 +21,14 @@ import ProductImageUpload from '../admin-view/image-upload'
 
 const extensions = [
   TextStyle,
-  StarterKit,
+  StarterKit.configure({
+    paragraph: {
+      HTMLAttributes: {
+        class: 'my-custom-p',
+      }
+    }
+  }),
+
   Link.configure({
     openOnClick: true,
     autolink: true,
@@ -38,49 +45,47 @@ const extensions = [
   }),
   Color.configure({
     types: ['textStyle'],
-  }),
-  FontSize
+  })
 ]
 
 function TipTap({ handleSave, content }) {
   const [open, setOpen] = useState(false);
   const [openImg, setOpenImg] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [imageLoadingState, setImageLoadingState] = useState(false);
 
-  const [actionType, setActionType] = useState('');
   const [url, setUrl] = useState('');
 
-  const handleAdd = () => {
-    if (actionType === 'link') {
-      // cancelled
-      if (url === null) {
-        setOpen(false);
-        return
-      }
-
-      // empty
-      if (url === '') {
-        editor.chain().focus().extendMarkRange('link').unsetLink()
-          .run()
-        setOpen(false);
-        return
-      }
-
-      // update link
-      editor.chain().focus().extendMarkRange('link').setLink({ href: url })
-        .run()
-
+  const handleAddLink = () => {
+    if (url === null) {
       setOpen(false);
-      setUrl('');
-
-    } else if (actionType === 'image') {
-      if (url) {
-        editor.chain().focus().setImage({ src: url }).run()
-
-        setOpen(false);
-        setUrl('');
-      }
+      return
     }
+
+    // empty
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink()
+        .run()
+      setOpen(false);
+      return
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url })
+      .run()
+
+    setOpen(false);
+    setUrl('');
   };
+
+  function handleAddImg() {
+    editor.chain().focus().setImage({ src: uploadedImageUrl }).run();
+    setUploadedImageUrl("");
+    setOpenImg(false);
+    setImageLoadingState(false);
+    setImageFile(null);
+  }
 
   const editor = useEditor({
     extensions,
@@ -96,11 +101,8 @@ function TipTap({ handleSave, content }) {
   if (!editor) null
 
   function onSave() {
-    const json = editor.getJSON();
-    // console.log(json);
-
+    const json = editor.getHTML();
     handleSave(json);
-
   }
 
   return (
@@ -194,7 +196,7 @@ function TipTap({ handleSave, content }) {
           </SelectContent>
         </Select>
 
-        <Select
+        {/* <Select
           onValueChange={(size) => {
             console.log(size);
             size === 'Default'
@@ -215,7 +217,7 @@ function TipTap({ handleSave, content }) {
             <SelectItem value="32px">32px</SelectItem>
             <SelectItem value="48px">48px</SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
 
         <Button
           size="icon"
@@ -264,8 +266,7 @@ function TipTap({ handleSave, content }) {
         <Button
           onClick={() => setOpen(true)}
           variant={editor.isActive('link') ? '' : 'outline'}
-          className="w-[100px]"
-        >{editor.getAttributes('link').href ?? "Link"}
+        >Link
         </Button >
 
         <Dialog open={open} onOpenChange={setOpen}>
@@ -282,14 +283,14 @@ function TipTap({ handleSave, content }) {
               </div>
             </div>
             <DialogFooter>
-              <Button onClick={() => handleAdd()}>Save</Button>
+              <Button onClick={() => handleAddLink()}>Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
 
         <Button
           size={'icon'}
-          onClick={() => handleOpenDialog('image')}
+          onClick={() => setOpenImg(true)}
           variant={'outline'}
         ><ImageIcon />
         </Button >
@@ -300,17 +301,25 @@ function TipTap({ handleSave, content }) {
               <div>
                 <Label htmlFor="url">URL</Label>
                 <Input
+                  disabled={imageFile ? true : false}
                   id="url"
                   defaultValue={editor.getAttributes('link').href ?? ""}
                   className="mt-2"
-                  onChange={(e) => setUrl(e.target.value)}
+                  onChange={(e) => setUploadedImageUrl(e.target.value)}
                 />
               </div>
-              <div>Or Upload IMG</div>
-              <ProductImageUpload />
+              <div className='text-center mt-2'>OR</div>
+              <ProductImageUpload
+                imageFile={imageFile}
+                setImageFile={setImageFile}
+                uploadedImageUrl={uploadedImageUrl}
+                setUploadedImageUrl={setUploadedImageUrl}
+                imageLoadingState={imageLoadingState}
+                setImageLoadingState={setImageLoadingState}
+              />
             </div>
             <DialogFooter>
-              <Button onClick={() => handleAdd()}>Save</Button>
+              <Button onClick={() => handleAddImg()}>Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

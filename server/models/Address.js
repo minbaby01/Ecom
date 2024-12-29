@@ -7,5 +7,5 @@ const AddressSchema = new mongoose.Schema({
     phone:  String
 }, { timestamps: true })
 
-const Address = mongoose.model('Address ', AddressSchema);
+const Address = mongoose.model('Address', AddressSchema);
 module.exports = Address;

@@ -25,7 +25,7 @@ function AdminProducts() {
     const [openCreateProductDialog, setOpenCreateProductDialog] = useState(false);
     const [formData, setFormData] = useState(initalFormData);
     const [imageFile, setImageFile] = useState(null);
-    const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+    const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
     const [imageLoadingState, setImageLoadingState] = useState(false);
     const [currentUpdateId, setCurrentUpdateId] = useState(null);
 
@@ -62,7 +62,7 @@ function AdminProducts() {
             } else {
                 dispatch(addNewProduct({
                     ...formData,
-                    image: uploadedImageUrl
+                    image: uploadedImageUrl ?? []
                 })).then((data) => {
                     if (data?.payload?.success) {
                         dispatch(getAllProducts());
@@ -118,6 +118,8 @@ function AdminProducts() {
                 setOpenCreateProductDialog(false);
                 setCurrentUpdateId(null);
                 setFormData(initalFormData);
+                setImageFile(null);
+                setUploadedImageUrl(null);
             }}>
             <SheetContent side="right" className="overflow-auto">
                 <SheetHeader>

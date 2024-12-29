@@ -117,13 +117,19 @@ function Address() {
     }, [dispatch]);
 
     return <Card>
+        <CardHeader>
+            <CardTitle>Address List</CardTitle>
+        </CardHeader>
         <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
             {
                 addressList && addressList.length > 0 ?
-                    addressList.map(item => <AddressCard key={item._id} addressInfo={item}
-                        handleUpdate={handleUpdate}
-                        handleDelete={handleDelete}
-                    />)
+                    addressList.map(item =>
+                        <AddressCard
+                            key={item._id}
+                            addressInfo={item}
+                            handleUpdate={handleUpdate}
+                            handleDelete={handleDelete}
+                        />)
                     : null
             }
         </div>

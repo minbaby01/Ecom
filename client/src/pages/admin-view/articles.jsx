@@ -20,7 +20,7 @@ function AdminArticles() {
     function handleDelete(getCurrentId) {
         dispatch(deleteArticle(getCurrentId)).then((data) => {
             console.log(data);
-            
+
             if (data?.payload?.success) {
                 dispatch(getAllArticles());
                 toast({
@@ -80,7 +80,8 @@ function AdminArticles() {
                                     <Button onClick={() => navigate(`update/${item._id}`)}>Edit</Button>
                                     <Button onClick={() => handleDelete(item?._id)}>Delete</Button>
                                 </TableCell>
-                            </TableRow>) : null}
+                            </TableRow>)
+                            : null}
                         <ArticleDetailsView open={openDetailsDialog} setOpen={setOpenDetailsDialog} articleDetails={articleDetails} />
                     </TableBody>
                 </Table>

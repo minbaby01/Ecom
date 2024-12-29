@@ -2,6 +2,8 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+require('dotenv').config()
+
 const authRouter = require("./routes/auth-routes");
 const adminProductsRouter = require("./routes/admin/products-routes");
 const adminArticlesRouter = require("./routes/admin/articles-routes");
@@ -9,10 +11,12 @@ const adminArticlesRouter = require("./routes/admin/articles-routes");
 const shopProductsRouter = require("./routes/shop/products-routes");
 const shopCartsRouter = require("./routes/shop/carts-routes");
 const shopAddressRouter = require("./routes/shop/address-routes");
+const shopSearchRouter = require("./routes/shop/search-routes");
+const shopOrderRouter = require("./routes/shop/orders-routes");
 
-const commonFeatureRouter= require('./routes/common/feature-routes')
+const commonFeatureRouter = require('./routes/common/feature-routes')
 
-mongoose.connect("mongodb+srv://admin:admin1234@cluster0.yypkr.mongodb.net/").then(() => {
+mongoose.connect(process.env.MONGOURL).then(() => {
     console.log("Connected");
 }).catch((err) => {
     console.log(err);
@@ -45,6 +49,8 @@ app.use('/api/admin/articles', adminArticlesRouter);
 app.use('/api/shop/products', shopProductsRouter);
 app.use('/api/shop/carts', shopCartsRouter);
 app.use('/api/shop/address', shopAddressRouter);
+app.use('/api/shop/search', shopSearchRouter);
+app.use('/api/shop/order', shopOrderRouter);
 
 app.use('/api/common/feature', commonFeatureRouter);
 app.listen(PORT, () => console.log(`Server is run on ${PORT} port`));

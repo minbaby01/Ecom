@@ -1,4 +1,4 @@
-const { imageUploadUtil } = require("../../helpers/cloudinary");
+const { imageUploadUtil, uploadImages } = require("../../helpers/cloudinary");
 const Product = require("../../models/Product");
 
 const createProduct = async (req, res) => {
@@ -32,11 +32,10 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find({});
+        const products = await Product.find({}).limit(5);
         res.status(200).json({
             success: true,
             data: products,
-
         });
     } catch (error) {
         console.log(error);
@@ -97,7 +96,7 @@ const deleteProduct = async (req, res) => {
 
     try {
         const product = await Product.findByIdAndDelete(id);
-        
+
         if (!product) {
             res.status(404).json({
                 success: true,
@@ -120,12 +119,17 @@ const deleteProduct = async (req, res) => {
 
 const handleImageUpload = async (req, res) => {
     try {
+        const base64s = [];
+        const imgageLength = req.files.length;
+        for (let i = 0; i < imgageLength; i++) {
+            const b64 = Buffer.from(req.files[i].buffer).toString("base64");
+            const url = "data:" + req.files[i].mimetype + ";base64," + b64;
+            base64s.push(url);
+        }
 
-        const b64 = Buffer.from(req.file.buffer).toString("base64");
-        const url = "data:" + req.file.mimetype + ";base64," + b64;
-        const result = await imageUploadUtil(url);
+        const result = await uploadImages(base64s);
 
-        res.json({
+        return res.json({
             success: true,
             result
         })

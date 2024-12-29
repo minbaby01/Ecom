@@ -98,7 +98,7 @@ function ShoppingListing() {
         setFilters(JSON.parse(sessionStorage.getItem('filters')) || {});
     }, [categorySearchParam])
 
-    useEffect(() => {
+    useEffect(() => {        
         if (filters && Object.keys(filters).length > 0) {
             const createQueryString = createSearchParamsHelper(filters);
             setSearchParams(new URLSearchParams(createQueryString));

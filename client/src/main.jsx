@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import store from './store/store.js'
 import { Provider } from 'react-redux'
 import { Toaster } from "@/components/ui/toaster"
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 export default function RootLayout({ children }) {
   return (
@@ -20,10 +21,12 @@ export default function RootLayout({ children }) {
 
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-      <Toaster />
-    </Provider>
-  </BrowserRouter>,
+  <GoogleOAuthProvider clientId='613852177193-m42c748l35779qh1m42g0l5g7s8edhud.apps.googleusercontent.com' >
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+        <Toaster />
+      </Provider>
+    </BrowserRouter>
+  </GoogleOAuthProvider>,
 )

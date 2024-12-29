@@ -27,7 +27,7 @@ export const loginUser = createAsyncThunk('/auth/login',
 
 export const logoutUser = createAsyncThunk('/auth/logout',
     async () => {
-        const response = await axios.post('http://localhost:5000/api/auth/logout',{}, {
+        const response = await axios.post('http://localhost:5000/api/auth/logout', {}, {
             withCredentials: true
         }
         );
@@ -41,6 +41,15 @@ export const checkAuth = createAsyncThunk('/auth/check-auth',
             headers: {
                 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
             }
+        }
+        );
+        return response.data;
+    })
+
+export const loginGoogle = createAsyncThunk('/auth/loginGoogle',
+    async (token) => {
+        const response = await axios.post('http://localhost:5000/api/auth/login-google', token, {
+            withCredentials: true
         }
         );
         return response.data;
@@ -94,6 +103,19 @@ const authSlice = createSlice({
                 state.isAuthenticated = false;
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.user = null;
+                state.isAuthenticated = false;
+            })
+            .addCase(loginGoogle.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(loginGoogle.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.user = action.payload.success ? action.payload.user : null;
+                state.isAuthenticated = action.payload.success ? true : false;
+            })
+            .addCase(loginGoogle.rejected, (state, action) => {
                 state.isLoading = false;
                 state.user = null;
                 state.isAuthenticated = false;

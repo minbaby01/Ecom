@@ -1,6 +1,5 @@
 import { Extension } from '@tiptap/core'
 
-// Tạo extension custom cho font size
 const FontSize = Extension.create({
   name: 'fontSize',
 
